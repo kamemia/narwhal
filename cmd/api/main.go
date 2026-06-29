@@ -1,9 +1,19 @@
 package main
 
 import (
-	"fmt"
+	"log"
+
+	"narwhal/internal/server"
+	"narwhal/internal/upload"
 )
 
 func main() {
-	fmt.Println("Hello, Narwal!")
+	uploadManager := upload.NewManager("uploads")
+
+	router := server.NewRouter(uploadManager)
+	server := server.NewServer(8080, router)
+
+	if err := server.Run(); err != nil {
+		log.Fatal(err)
+	}
 }
